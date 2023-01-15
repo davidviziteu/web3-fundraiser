@@ -126,7 +126,7 @@ contract Fundraiser is BaseFundraiser {
     require(_projectId < projectCount, "Project does not exist");
     Project storage project = projects[_projectId];
     require(msg.sender == project.owner, "You are not the owner of this project");
-    project.descriptionLink = _newDescriptionLink;git
+    project.descriptionLink = _newDescriptionLink;
   }
 
   function applyForFunding(string memory _name, uint256 _goal, uint32 _fundingDurationMinutes, string memory _descriptionLink) public whenNotPaused returns (uint256){
