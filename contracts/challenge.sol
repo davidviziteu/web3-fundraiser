@@ -4,9 +4,6 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-//todo: add pause function for upgradability, test all
-
-
 contract Mytoken is ERC20 {
   constructor() ERC20("Mytoken", "MTK") {}
 
@@ -16,7 +13,7 @@ contract Mytoken is ERC20 {
 
 }
 
-//pausable is for upgradability - we stop
+//pausable is for upgradability 
 abstract contract Pausable {
   bool private _pauseFlag;
   constructor(){
