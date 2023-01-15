@@ -1,5 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
+ 
+
+/**
+
+Your contract(s) should be written such that:
+
+1. Funds take the form of a custom ERC20 token
+2. Crowdfunded projects have a funding goal
+3. When a funding goal is not met, customers are be able to get a refund of their pledged funds
+4. dApps using the contract can observe state changes in transaction logs
+5. Optional bonus: contract is upgradeable
+
+*/
+
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -10,10 +24,9 @@ contract Mytoken is ERC20 {
   function pumpMoney(uint256 _amount) public {
     _mint(msg.sender, _amount);
   }
-
 }
 
-//pausable is for upgradability 
+//pausable is for upgradability
 abstract contract Pausable {
   bool private _pauseFlag;
   constructor(){
@@ -74,6 +87,11 @@ abstract contract BaseFundraiser is IFundraiser, Pausable, Ownable {
     _pause();
   }
 
+  function isContractDepricated() public view returns (bool) {
+    require(nextFundraiser == address(0), "Current contract is depricated - no one can submit or fund projects; existing funds can be withdrawn");
+    return false;
+  }
+
   constructor(){
     nextFundraiser = address(0);
   }
@@ -104,11 +122,6 @@ contract Fundraiser is BaseFundraiser {
 
     IERC20(tokenAddress).approve(address(this), type(uint256).max); 
     nextFundraiser = address(0);
-  }
-
-  function isContractDepricated() public view returns (bool) {
-    require(nextFundraiser == address(0), "Current contract is depricated - no one can submit or fund projects; existing funds can be withdrawn");
-    return false;
   }
 
   function getTokenAddress() public view returns (address) {
@@ -239,15 +252,6 @@ contract Fundraiser is BaseFundraiser {
 }
 
 /**
-Your contract(s) should be written such that:
-
-1. Funds take the form of a custom ERC20 token
-2. Crowdfunded projects have a funding goal
-3. When a funding goal is not met, customers are be able to get a refund of their pledged funds
-4. dApps using the contract can observe state changes in transaction logs
-5. Optional bonus: contract is upgradeable
-
-
 1. Submit your project on GitHub as a public repository that we can run locally, preferably using truffle, ganache, and hardhat.
 
 If you prefer to use different tools, provide explicit instructions to get the contract up and running locally. We should be 
